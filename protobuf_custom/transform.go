@@ -63,6 +63,7 @@ func (t *Transformer) SetEnumSet(ts TypeSet) {
 
 // Transform converts a scanned package to a protobuf package.
 func (t *Transformer) Transform(p *scanner.Package) *Package {
+	//fmt.Println("Inside the transform ", p)
 	pkg := &Package{
 		Name: toProtobufPkg(p.Path),
 		Path: p.Path,
@@ -80,16 +81,18 @@ func (t *Transformer) Transform(p *scanner.Package) *Package {
 
 	names := buildNameSet(p)
 	for _, f := range p.Funcs {
+		//fmt.Println("Inside Transform", f)
+
 		rpc := t.transformFunc(pkg, f, names)
 		if rpc != nil {
 			pkg.RPCs = append(pkg.RPCs, rpc)
 		}
 	}
-
 	return pkg
 }
 
 func (t *Transformer) transformFunc(pkg *Package, f *scanner.Func, names nameSet) *RPC {
+	//fmt.Println(f.Name)
 	var (
 		name         = f.Name
 		receiverName string
@@ -102,7 +105,7 @@ func (t *Transformer) transformFunc(pkg *Package, f *scanner.Func, names nameSet
 			return nil
 		}
 
-		name = fmt.Sprintf("%s_%s", n.Name, name)
+		//	name = fmt.Sprintf("%s_%s", n.Name, name)
 		receiverName = n.Name
 	}
 	input, hasCtx := removeFirstCtx(f.Input)

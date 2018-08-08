@@ -65,7 +65,7 @@ func findPkgTypesAndFuncs(pkg *ast.Package) (map[string]*ast.TypeSpec, map[strin
 				}
 			}
 		case *ast.FuncDecl:
-			fmt.Println(decl)
+			//fmt.Println(decl)
 			funcs[findName(decl)] = decl
 		}
 	}
@@ -134,7 +134,7 @@ const genComment = `//proteus:generate`
 
 func (ctx *context) shouldGenerateFunc(name string) bool {
 
-	fmt.Println("name", name)
+	//fmt.Println("name", name)
 	if fn, ok := ctx.funcs[name]; ok && fn.Doc != nil {
 		return true
 	}

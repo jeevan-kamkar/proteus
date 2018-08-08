@@ -45,12 +45,11 @@ func (g *Generator) Generate(pkg *Package) error {
 	if len(pkg.RPCs) > 0 {
 		writeService(&buf, pkg)
 	}
-
-	return g.writeFile(pkg.Path, buf.Bytes())
+	return g.writeFile(pkg.Path, buf.Bytes(), pkg.Name)
 }
 
-func (g *Generator) writeFile(path string, data []byte) error {
-	path = filepath.Join(g.basePath, path)
+func (g *Generator) writeFile(path string, data []byte, fileName string) error {
+	path = g.basePath + "/" + fileName
 	fi, err := os.Stat(g.basePath)
 	if err != nil {
 		return err
@@ -60,12 +59,12 @@ func (g *Generator) writeFile(path string, data []byte) error {
 		return err
 	}
 
-	file := filepath.Join(path, "generated.proto")
+	file := filepath.Join(path, fileName+".proto")
 	if err := ioutil.WriteFile(file, data, fi.Mode()); err != nil {
 		return err
 	}
 
-	report.Info("Generated proto: %s", file)
+	report.Info(fileName+".proto: %s", file)
 	return nil
 }
 

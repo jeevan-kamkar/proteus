@@ -121,7 +121,7 @@ func buildPackage(ctx *context, gopkg *types.Package) (*Package, error) {
 	}
 
 	for _, o := range objs {
-		fmt.Println("Inside the build package", o)
+		//fmt.Println("Inside the build package", o)
 		if err := pkg.scanObject(ctx, o); err != nil {
 			return nil, err
 		}
@@ -135,7 +135,7 @@ func (p *Package) scanObject(ctx *context, o types.Object) error {
 	if !o.Exported() {
 		return nil
 	}
-	fmt.Println("Scan Object type", o.Type())
+	//fmt.Println("Scan Object type", o.Type())
 	switch t := o.Type().(type) {
 	case *types.Named:
 		hasStringMethod, err := isStringer(t)
@@ -167,9 +167,9 @@ func (p *Package) scanObject(ctx *context, o types.Object) error {
 			p.Aliases[objName(t.Obj())] = scanType(t.Underlying())
 		}
 	case *types.Signature:
-		fmt.Println(nameForFunc(o))
+		//fmt.Println(nameForFunc(o))
 		if ctx.shouldGenerateFunc(nameForFunc(o)) {
-			fmt.Println("Inside Signature", o.Name())
+			//fmt.Println("Inside Signature", o.Name())
 			fn := scanFunc(&Func{Name: o.Name()}, t)
 			ctx.trySetDocs(nameForFunc(o), fn)
 			p.Funcs = append(p.Funcs, fn)
@@ -307,7 +307,7 @@ func scanStruct(s *Struct, elem *types.Struct) *Struct {
 }
 
 func scanFunc(fn *Func, signature *types.Signature) *Func {
-	fmt.Println("function scan ", signature, fn)
+	///fmt.Println("function scan ", signature, fn)
 	if signature.Recv() != nil {
 		fn.Receiver = scanType(signature.Recv().Type())
 	}
@@ -402,7 +402,7 @@ func objectsInScope(scope *types.Scope) (objs []types.Object) {
 		//fmt.Println("Type", typ)
 		//fmt.Println("Type Underlaying", typ, typ.Underlying())
 		if _, ok := typ.Underlying().(*types.Struct); ok {
-			fmt.Println("Inside the if ", typ)
+			//fmt.Println("Inside the if ", typ)
 			// Only need to extract methods for the pointer type since it contains
 			// the methods for the non-pointer type as well.
 			objs = append(objs, methodsForType(types.NewPointer(typ))...)
