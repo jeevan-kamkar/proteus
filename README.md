@@ -10,7 +10,7 @@
     -p : Path of Application Code  (package)
      -f: Path where proto file needs to be stored   
 
-#Limitation 
+# Limitation 
 1. If any interface or error is used as request or response params in method those fileds 
    will be ignored in proto
 2. Proto defination of entire   package (Application Code ) will be genereated in single      file 
